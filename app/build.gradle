@@ -64,4 +64,11 @@ dependencies {
     //image loader coil
     implementation "io.coil-kt:coil-compose:2.1.0"
 
+    //room DB
+    implementation "androidx.room:room-runtime:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
+    implementation "androidx.compose.runtime:runtime-livedata:1.2.0"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
+
 }

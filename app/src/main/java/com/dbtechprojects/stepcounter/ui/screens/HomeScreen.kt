@@ -3,7 +3,6 @@ package com.dbtechprojects.stepcounter.ui.screens
 import android.hardware.SensorEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.R
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -22,12 +21,12 @@ import com.dbtechprojects.stepcounter.ui.theme.Purple700
 
 @Composable
 fun HomeScreen(
-    count: MutableState<Int>,
+    count: MutableState<Int?>,
     runImgContentDescription: String,
     navController: NavHostController,
     showPermDeniedScreen: MutableState<Boolean>
-){
-    if (showPermDeniedScreen.value){
+) {
+    if (showPermDeniedScreen.value) {
         PermissionDeniedScreen()
         return
     }
@@ -57,19 +56,23 @@ fun HomeScreen(
 }
 
 @Composable
-fun StepText(steps: MutableState<Int>) {
-    Text(
-        text = "You have done ${steps.value} steps today!",
-        fontSize = 24.sp,
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold
-    )
+fun StepText(steps: MutableState<Int?>) {
+    if (steps.value != null) {
+        Text(
+            text = "You have done ${steps.value} steps today!",
+            fontSize = 24.sp,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
+    } else {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
 fun HistoryFab(navController: NavHostController) {
     return FloatingActionButton(
-        onClick = { navController.navigate(Constants.HISTORY_SCREEN)},
+        onClick = { navController.navigate(Constants.HISTORY_SCREEN) },
         backgroundColor = MaterialTheme.colors.primary,
         modifier = Modifier.size(52.dp)
     ) {
