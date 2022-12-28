@@ -16,14 +16,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.dbtechprojects.stepcounter.Constants
 import com.dbtechprojects.stepcounter.ui.theme.Purple700
 
 @Composable
-fun HomeScreen(count: MutableState<Int>, runImgContentDescription: String){
-    Scaffold(floatingActionButton = { HistoryFab() }, content = { padding ->
+fun HomeScreen(
+    count: MutableState<Int>,
+    runImgContentDescription: String,
+    navController: NavHostController,
+    showPermDeniedScreen: MutableState<Boolean>
+){
+    if (showPermDeniedScreen.value){
+        PermissionDeniedScreen()
+        return
+    }
+    Scaffold(floatingActionButton = { HistoryFab(navController) }, content = { padding ->
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Welcome To Your Step Counter",
+                text = stringResource(com.dbtechprojects.stepcounter.R.string.home_screen_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -56,9 +67,9 @@ fun StepText(steps: MutableState<Int>) {
 }
 
 @Composable
-fun HistoryFab() {
+fun HistoryFab(navController: NavHostController) {
     return FloatingActionButton(
-        onClick = { },
+        onClick = { navController.navigate(Constants.HISTORY_SCREEN)},
         backgroundColor = MaterialTheme.colors.primary,
         modifier = Modifier.size(52.dp)
     ) {

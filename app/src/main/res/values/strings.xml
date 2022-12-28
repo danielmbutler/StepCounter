@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">StepCounter</string>
-    <string name="title_activity_main2">MainActivity2</string>
     <string name="running_img">Running Img</string>
     <string name="walk_history">See walk history</string>
+    <string name="home_screen_title">Welcome To Your Step Counter</string>
+    <string name="walk_history_title">Walk History</string>
+    <string name="accessibility">Accessibility</string>
+    <string name="permission_denied_description">Activity Recognition Permission is required for this app to function please enable in settings.</string>
 </resources>
