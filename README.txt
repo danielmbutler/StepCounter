@@ -1,4 +1,4 @@
-Setup DB
+Setup DB - Move count logic to viewmodel
 UI
 Manage Turn Off
 watch tile

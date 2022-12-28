@@ -2,21 +2,34 @@ package com.dbtechprojects.stepcounter
 
 import android.Manifest
 import android.content.Context
-import android.hardware.*
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.dbtechprojects.stepcounter.ui.screens.HomeScreen
+import com.dbtechprojects.stepcounter.ui.screens.getValue
+import com.dbtechprojects.stepcounter.ui.theme.Purple700
 import com.dbtechprojects.stepcounter.ui.theme.StepCounterTheme
 
 class MainActivity : ComponentActivity(), SensorEventListener {
@@ -33,9 +46,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             ) { isGranted: Boolean ->
                 if (isGranted) {
                     val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-                    val currentSteps: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-                    sensorManager.registerListener(this, currentSteps,Sensor.TYPE_STEP_COUNTER)
-
+                    val currentSteps: Sensor? =
+                        sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+                    sensorManager.registerListener(this, currentSteps, Sensor.TYPE_STEP_COUNTER)
                 } else {
                     // Explain to the user that the feature is unavailable because the
                     // feature requires a permission that the user has denied. At the
@@ -56,31 +69,19 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
-                    Greeting("Daniel", count)
+                   HomeScreen(count = count, runImgContentDescription = getString(R.string.running_img))
                 }
             }
         }
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER){
+        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER) {
             count.value = event.getValue()
         }
-        Log.d("event", event.toString())
-
-        Log.d("event23", "values ${event?.values}")
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 }
 
-@Composable
-fun Greeting(name: String, steps: MutableState<Int>) {
-    Text(text = "Hello $name you have done ${steps.value} steps today!")
-}
-
-fun SensorEvent.getValue(): Int {
-    return (this.values?.get(0) ?: 0).toInt()
-}

@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">StepCounter</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="running_img">Running Img</string>
+    <string name="walk_history">See walk history</string>
 </resources>
