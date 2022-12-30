@@ -74,4 +74,5 @@ dependencies {
     //work manager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
+    implementation('io.github.bytebeats:compose-charts:0.1.2')
 }

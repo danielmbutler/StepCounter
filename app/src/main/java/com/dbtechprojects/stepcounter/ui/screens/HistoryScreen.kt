@@ -1,6 +1,5 @@
 package com.dbtechprojects.stepcounter.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,24 +8,31 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dbtechprojects.stepcounter.R
 import com.dbtechprojects.stepcounter.models.Day
+import com.dbtechprojects.stepcounter.models.getBarData
 import com.dbtechprojects.stepcounter.models.getDayText
+import com.dbtechprojects.stepcounter.models.getMockData
 import com.dbtechprojects.stepcounter.ui.theme.lightGreen
+import me.bytebeats.views.charts.bar.BarChart
+import me.bytebeats.views.charts.bar.BarChartData
+import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer
+import me.bytebeats.views.charts.bar.render.yaxis.SimpleYAxisDrawer
+import me.bytebeats.views.charts.simpleChartAnimation
 
 @Composable
-fun HistoryScreen(days: MutableState<List<Day>>){
+fun HistoryScreen(days: List<Day>){
     Scaffold( content = { padding ->
         Column(
             Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(PaddingValues(12.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -38,11 +44,20 @@ fun HistoryScreen(days: MutableState<List<Day>>){
                 )
             }
             Spacer(modifier = Modifier.size(12.dp))
+            BarChart(
+                barChartData = BarChartData(days.first().getMockData().getBarData()),
+                animation = simpleChartAnimation(),
+                modifier = Modifier.fillMaxWidth().fillMaxHeight(0.45f),
+                labelDrawer = SimpleLabelDrawer(labelTextColor = Color.White, drawLocation = SimpleLabelDrawer.DrawLocation.XAxis),
+                yAxisDrawer = SimpleYAxisDrawer(labelTextColor = Color.White, labelValueFormatter = {value: Float -> value.toInt().toString()}, drawLabelEvery = 5)
+
+            )
+            Spacer(modifier = Modifier.size(36.dp))
             LazyColumn(
                 modifier = Modifier.background(MaterialTheme.colors.primary),
             ) {
 
-                items(days.value) { day ->
+                items(days) { day ->
                     Column(modifier = Modifier
                         .fillMaxSize()
                         .background(lightGreen)) {

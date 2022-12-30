@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
     private var count = mutableStateOf<Int?>(null)
-    private var activityLast7Days = mutableStateOf<List<Day>>(listOf())
+    private var activityLast7Days = listOf<Day>()
     private var showPermDeniedScreen = mutableStateOf(false)
 
 
@@ -74,10 +74,9 @@ class MainActivity : ComponentActivity() {
     private fun observeViewModel(){
         viewModel.count.observe(this){ count ->
             this.count.value = count
-            Log.d("count", count.toString())
         }
         viewModel.activityInLastWeek.observe(this){ value ->
-            this.activityLast7Days.value = value
+            this.activityLast7Days = value
         }
     }
 

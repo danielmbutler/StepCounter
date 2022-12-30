@@ -46,7 +46,7 @@ class StepCounterService: Service() {
                     GlobalScope.launch(Dispatchers.IO) {
                         val currentDay = db.getCurrentDay()
                         currentDaySteps = (currentDay?.steps ?: 0) + event.getValue()
-                        builder.setContentText("You have done ${currentDaySteps} steps today !")
+                        builder.setContentText("You have done $currentDaySteps steps today !")
                         NotificationManagerCompat.from(this@StepCounterService).notify(1, builder.build())
                         if (currentDay == null) {
                             db.insertDay(
