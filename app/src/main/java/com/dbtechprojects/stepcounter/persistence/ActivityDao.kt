@@ -7,10 +7,19 @@ import com.dbtechprojects.stepcounter.models.Day
 @Dao
 interface ActivityDao {
 
-    @Query("SELECT * FROM Days ORDER BY date DESC")
-    fun getDays() : LiveData<List<Day>>
+    @Query("SELECT * FROM Days WHERE date > datetime('now', '-7 day')")
+    fun getActivityInLastWeek() : LiveData<List<Day>>
 
     @Query("SELECT steps FROM Days WHERE date=:date")
     fun getCurrentCount(date: String = Constants.getCurrentDate()): LiveData<Int?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDay(day: Day)
+
+    @Update
+    fun updateDay(day: Day)
+
+    @Query("SELECT * FROM Days WHERE date=:date")
+    fun getCurrentDay(date: String = Constants.getCurrentDate()): Day?
 
 }

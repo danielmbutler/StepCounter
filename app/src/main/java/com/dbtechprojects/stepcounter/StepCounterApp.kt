@@ -1,6 +1,7 @@
 package com.dbtechprojects.stepcounter
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.dbtechprojects.stepcounter.persistence.ActivityDao
 import com.dbtechprojects.stepcounter.persistence.ActivityDatabase
@@ -33,6 +34,10 @@ class StepCounterApp : Application(){
 
         fun getDao(): ActivityDao {
             return instance!!.getDb().ActivityDao()
+        }
+
+        fun getApplicationContext(): Context {
+            return instance!!.applicationContext
         }
 
     }

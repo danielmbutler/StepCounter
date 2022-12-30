@@ -71,4 +71,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.4.3"
     kapt "androidx.room:room-compiler:2.4.3"
 
+    //work manager
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+
 }

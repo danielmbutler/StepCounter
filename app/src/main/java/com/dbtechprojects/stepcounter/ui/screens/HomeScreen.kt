@@ -1,6 +1,7 @@
 package com.dbtechprojects.stepcounter.ui.screens
 
 import android.hardware.SensorEvent
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -87,5 +88,6 @@ fun HistoryFab(navController: NavHostController) {
 }
 
 fun SensorEvent.getValue(): Int {
+    Log.d("counto", (this.values[0].toString()))
     return (this.values?.get(0) ?: 0).toInt()
 }

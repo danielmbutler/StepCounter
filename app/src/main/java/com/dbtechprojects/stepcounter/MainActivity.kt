@@ -1,8 +1,13 @@
 package com.dbtechprojects.stepcounter
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,19 +19,26 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.work.BackoffPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import com.dbtechprojects.stepcounter.models.Day
 import com.dbtechprojects.stepcounter.ui.screens.HistoryScreen
 import com.dbtechprojects.stepcounter.ui.screens.HomeScreen
 import com.dbtechprojects.stepcounter.ui.theme.StepCounterTheme
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
     private var count = mutableStateOf<Int?>(null)
+    private var activityLast7Days = mutableStateOf<List<Day>>(listOf())
     private var showPermDeniedScreen = mutableStateOf(false)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = MainViewModel(StepCounterApp.getDao())
+        observeViewModel()
 
         setContent {
             StepCounterTheme {
@@ -50,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         }
                         // History Screen
                         composable(Constants.HISTORY_SCREEN) {
-                            HistoryScreen()
+                            HistoryScreen(activityLast7Days)
                         }
                     }
 
@@ -62,6 +74,10 @@ class MainActivity : ComponentActivity() {
     private fun observeViewModel(){
         viewModel.count.observe(this){ count ->
             this.count.value = count
+            Log.d("count", count.toString())
+        }
+        viewModel.activityInLastWeek.observe(this){ value ->
+            this.activityLast7Days.value = value
         }
     }
 
@@ -70,14 +86,24 @@ class MainActivity : ComponentActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            showPermDeniedScreen.value = !isGranted
+            if (isGranted) {
+                startStepCounterService()
+                showPermDeniedScreen.value = false
+            } else {
+                showPermDeniedScreen.value = true
+            }
         }
+
+    private fun startStepCounterService(){
+        startService(Intent(this, StepCounterService::class.java))
+    }
 
     override fun onResume() {
         super.onResume()
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             requestPermissionLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
+        } else {
+            startStepCounterService()
         }
     }
 }

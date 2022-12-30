@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -27,6 +29,9 @@
             </intent-filter>
 
         </activity>
+
+        <service android:enabled="true" android:name=".StepCounterService" />
+
     </application>
 
 </manifest>
