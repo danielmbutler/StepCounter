@@ -1,6 +1,9 @@
 package com.dbtechprojects.stepcounter
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
@@ -14,31 +17,29 @@ import androidx.core.app.NotificationManagerCompat
 import com.dbtechprojects.stepcounter.models.Day
 import com.dbtechprojects.stepcounter.persistence.ActivityDao
 import com.dbtechprojects.stepcounter.ui.screens.getValue
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
-class StepCounterService: Service() {
+class StepCounterService : Service() {
 
     private lateinit var db: ActivityDao
     private var notification: Notification? = null
     private val mNotificationId = 123
     private var currentDaySteps = 0
-    private lateinit var sensorManager : SensorManager
+    private lateinit var sensorManager: SensorManager
     private lateinit var sensorEventListener: SensorEventListener
     private lateinit var builder: NotificationCompat.Builder
+    private lateinit var timer: Job
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
 
-
     override fun onCreate() {
         super.onCreate()
         generateForegroundNotification()
-        sensorEventListener =  object : SensorEventListener {
+        sensorEventListener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent?) {
                 Log.d("viewModel", "${event?.getValue()}")
 
@@ -47,7 +48,8 @@ class StepCounterService: Service() {
                         val currentDay = db.getCurrentDay()
                         currentDaySteps = (currentDay?.steps ?: 0) + event.getValue()
                         builder.setContentText("You have done $currentDaySteps steps today !")
-                        NotificationManagerCompat.from(this@StepCounterService).notify(1, builder.build())
+                        NotificationManagerCompat.from(this@StepCounterService)
+                            .notify(1, builder.build())
                         if (currentDay == null) {
                             db.insertDay(
                                 Day(
@@ -70,6 +72,7 @@ class StepCounterService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action != null && intent.action.equals(ACTION_STOP)) {
             sensorManager.unregisterListener(sensorEventListener)
+            timer.cancel()
             stopForeground(true)
         }
 
@@ -77,13 +80,33 @@ class StepCounterService: Service() {
         db = StepCounterApp.getDao()
 
         // register sensor
-         sensorManager = StepCounterApp.getApplicationContext()
+        sensorManager = StepCounterApp.getApplicationContext()
             .getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val currentSteps: Sensor =
             sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
-        sensorManager.registerListener( sensorEventListener, currentSteps, Sensor.TYPE_STEP_DETECTOR)
+        sensorManager.registerListener(sensorEventListener, currentSteps, Sensor.TYPE_STEP_DETECTOR)
+
+        // start timer to check if day has changed
+        startTimer()
 
         return START_NOT_STICKY
+    }
+
+    private fun startTimer() {
+        timer = CoroutineScope(Dispatchers.Default).launch {
+            while (true) {
+                val currentDay = db.getCurrentDay()
+                // if no steps for current day then update db to ensure a new day is inserted with 0
+                if (currentDay == null) {
+                    db.insertDay(
+                        Day(
+                            steps = currentDaySteps
+                        )
+                    )
+                }
+                delay(300000) // 5 mins
+            }
+        }
     }
 
     private fun generateForegroundNotification() {
@@ -95,7 +118,7 @@ class StepCounterService: Service() {
         val channel = NotificationChannel(channelId, name, importance)
         channel.description = description
 
-         val notificationManager = getSystemService(
+        val notificationManager = getSystemService(
             NotificationManager::class.java
         )
         notificationManager.createNotificationChannel(channel)
@@ -114,8 +137,8 @@ class StepCounterService: Service() {
 
     }
 
-    companion object{
-        const val ACTION_STOP =  "${BuildConfig.APPLICATION_ID}.stop"
+    companion object {
+        const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
     }
 
 }
