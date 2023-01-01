@@ -1,7 +1,7 @@
-Setup DB - Move count logic to viewmodel
-UI
+App -
 Manage Turn Off
-watch tile
-previous days
-permission denied screen
-history screen with list view
+
+Watch -
+Main Screen
+Tile
+Complication
