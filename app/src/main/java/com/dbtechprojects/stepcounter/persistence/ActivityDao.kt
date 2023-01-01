@@ -7,7 +7,7 @@ import com.dbtechprojects.stepcounter.models.Day
 @Dao
 interface ActivityDao {
 
-    @Query("SELECT * FROM Days WHERE date > datetime('now', '-7 day')")
+    @Query("SELECT * FROM Days WHERE date > datetime('now', '-7 day') ORDER BY date desc")
     fun getActivityInLastWeek() : LiveData<List<Day>>
 
     @Query("SELECT steps FROM Days WHERE date=:date")

@@ -18,29 +18,32 @@ data class Day(
     @ColumnInfo(name = "steps") val steps: Int = 0
 )
 
-fun Day.getDayText(): String {
+fun Day.getDayOfWeekText(): String {
     val format = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     return LocalDate.parse(this.date, format).dayOfWeek.name.lowercase(Locale.ROOT)
         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 }
 
-fun Day.getMockData():List<Day>{
+
+// if full week avaiable return full week else return fake data
+fun List<Day>.getChartData():List<Day>{
+    if (this.size == 7){
+        return this
+    }
+
     val format = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    return listOf(
-        this,
-        this.copy(id = this.id?.plus(1),
-            date = LocalDate.parse(this.date, format).minusDays(1).format(format), steps = 3000),
-        this.copy(id = this.id?.plus(2),
-            date = LocalDate.parse(this.date, format).minusDays(2).format(format), steps = 4000),
-        this.copy(id = this.id?.plus(3),
-            date = LocalDate.parse(this.date, format).minusDays(3).format(format), steps = 3000),
-        this.copy(id = this.id?.plus(4),
-            date = LocalDate.parse(this.date, format).minusDays(4).format(format), steps = 5000),
-        this.copy(id = this.id?.plus(5),
-            date = LocalDate.parse(this.date, format).minusDays(5).format(format), steps = 7500),
-        this.copy(id = this.id?.plus(6),
-            date = LocalDate.parse(this.date, format).minusDays(6).format(format), steps = 7000),
-    )
+
+    val newActivityList = mutableListOf<Day>()
+    newActivityList.addAll(this)
+
+    val remainingDaysInWeek = 7 - this.size
+    val last = this.last()
+
+    for (i in 1..remainingDaysInWeek){
+        newActivityList.add( last.copy(id = last.id?.plus(i),
+            date = LocalDate.parse(last.date, format).minusDays(i.toLong()).format(format), steps = 0))
+    }
+    return newActivityList
 }
 
 fun List<Day>.getBarData(): List<BarChartData.Bar>{
@@ -49,9 +52,22 @@ fun List<Day>.getBarData(): List<BarChartData.Bar>{
     val list = mutableListOf<BarChartData.Bar>()
 
     sortedList.forEach { activity ->
-        val bar = BarChartData.Bar(activity.steps.toFloat(), color = lightGreen, activity.getDayText().first().toString())
+        val bar = BarChartData.Bar(activity.steps.toFloat(), color = lightGreen, activity.getDayOfWeekText().first().toString())
         list.add(bar)
     }
 
     return list
+}
+
+fun Day.isToday(): Boolean {
+    val format = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return LocalDate.parse(this.date, format).isEqual(LocalDate.now())
+}
+
+fun Day.getDayString(): String {
+    return if (this.isToday()){
+        "Today"
+    } else {
+        "on this day"
+    }
 }

@@ -16,10 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dbtechprojects.stepcounter.R
-import com.dbtechprojects.stepcounter.models.Day
-import com.dbtechprojects.stepcounter.models.getBarData
-import com.dbtechprojects.stepcounter.models.getDayText
-import com.dbtechprojects.stepcounter.models.getMockData
+import com.dbtechprojects.stepcounter.models.*
+import com.dbtechprojects.stepcounter.ui.theme.Purple700
 import com.dbtechprojects.stepcounter.ui.theme.lightGreen
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
@@ -45,7 +43,7 @@ fun HistoryScreen(days: List<Day>){
             }
             Spacer(modifier = Modifier.size(12.dp))
             BarChart(
-                barChartData = BarChartData(days.first().getMockData().getBarData()),
+                barChartData = BarChartData(days.getChartData().getBarData()),
                 animation = simpleChartAnimation(),
                 modifier = Modifier.fillMaxWidth().fillMaxHeight(0.45f),
                 labelDrawer = SimpleLabelDrawer(labelTextColor = Color.White, drawLocation = SimpleLabelDrawer.DrawLocation.XAxis),
@@ -61,10 +59,11 @@ fun HistoryScreen(days: List<Day>){
                     Column(modifier = Modifier
                         .fillMaxSize()
                         .background(lightGreen)) {
-                        Text(text = " ${day.getDayText()}", fontWeight = FontWeight.Bold)
-                        Text(text = " You completed ${day.steps} steps on this day !", fontWeight = FontWeight.Bold)
+                        Text(text = " ${day.getDayOfWeekText()}", fontWeight = FontWeight.Bold)
+                        Text(text = " You completed ${day.steps} steps ${day.getDayString()} !", fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.size(6.dp))
                     }
+                    Spacer(Modifier.height(12.dp).background(Purple700).fillMaxWidth())
                 }
             }
         }

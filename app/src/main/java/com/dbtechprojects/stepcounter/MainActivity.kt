@@ -1,13 +1,9 @@
 package com.dbtechprojects.stepcounter
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,14 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.work.BackoffPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import com.dbtechprojects.stepcounter.models.Day
+import com.dbtechprojects.stepcounter.services.StepCounterService
 import com.dbtechprojects.stepcounter.ui.screens.HistoryScreen
 import com.dbtechprojects.stepcounter.ui.screens.HomeScreen
 import com.dbtechprojects.stepcounter.ui.theme.StepCounterTheme
-import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
@@ -94,7 +87,7 @@ class MainActivity : ComponentActivity() {
         }
 
     private fun startStepCounterService(){
-        startService(Intent(this, StepCounterService::class.java))
+        startForegroundService(Intent(this, StepCounterService::class.java))
     }
 
     override fun onResume() {

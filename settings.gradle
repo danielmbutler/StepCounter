@@ -1,2 +1,3 @@
 rootProject.name = "StepCounter"
 include ':app'
+include ':stepcounterwatch'

@@ -1,4 +1,4 @@
-package com.dbtechprojects.stepcounter
+package com.dbtechprojects.stepcounter.services
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -14,6 +14,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.dbtechprojects.stepcounter.BuildConfig
+import com.dbtechprojects.stepcounter.R
+import com.dbtechprojects.stepcounter.StepCounterApp
 import com.dbtechprojects.stepcounter.models.Day
 import com.dbtechprojects.stepcounter.persistence.ActivityDao
 import com.dbtechprojects.stepcounter.ui.screens.getValue
@@ -24,7 +27,7 @@ class StepCounterService : Service() {
 
     private lateinit var db: ActivityDao
     private var notification: Notification? = null
-    private val mNotificationId = 123
+    private val mNotificationId = 1
     private var currentDaySteps = 0
     private lateinit var sensorManager: SensorManager
     private lateinit var sensorEventListener: SensorEventListener
@@ -49,7 +52,7 @@ class StepCounterService : Service() {
                         currentDaySteps = (currentDay?.steps ?: 0) + event.getValue()
                         builder.setContentText("You have done $currentDaySteps steps today !")
                         NotificationManagerCompat.from(this@StepCounterService)
-                            .notify(1, builder.build())
+                            .notify(mNotificationId, builder.build())
                         if (currentDay == null) {
                             db.insertDay(
                                 Day(
@@ -100,7 +103,7 @@ class StepCounterService : Service() {
                 if (currentDay == null) {
                     db.insertDay(
                         Day(
-                            steps = currentDaySteps
+                            steps = 0
                         )
                     )
                 }
@@ -132,7 +135,7 @@ class StepCounterService : Service() {
         val managerCompat = NotificationManagerCompat.from(this)
         notification = builder.build()
         notification!!.flags = Notification.FLAG_ONGOING_EVENT
-        managerCompat.notify(1, notification!!)
+        managerCompat.notify(mNotificationId, notification!!)
         startForeground(mNotificationId, notification)
 
     }
