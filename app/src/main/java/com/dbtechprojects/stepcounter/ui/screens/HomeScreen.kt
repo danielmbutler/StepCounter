@@ -47,7 +47,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(id = com.dbtechprojects.stepcounter.R.drawable.run_img),
+                imageVector = ImageVector.vectorResource(id = com.dbtechprojects.stepcountershared.R.drawable.run_img),
                 contentDescription = runImgContentDescription,
                 Modifier.size(120.dp),
             )

@@ -56,4 +56,11 @@ dependencies {
     // Foundation is additive, so you can use the mobile version in your Wear OS app.
     implementation("androidx.wear.compose:compose-foundation:1.1.0")
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':stepcounterShared')
+
+    // complications
+    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.1.1"
+
+
 }

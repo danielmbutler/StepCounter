@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.dbtechprojects.pibuddy"
+        applicationId "com.dbtechprojects.stepcounter"
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 1
@@ -77,6 +77,9 @@ dependencies {
     // bar char
     implementation('io.github.bytebeats:compose-charts:0.1.2')
 
+    // Shared module
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':stepcounterShared')
 
 
 }

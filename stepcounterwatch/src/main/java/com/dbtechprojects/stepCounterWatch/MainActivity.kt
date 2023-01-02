@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,13 +34,6 @@ class MainActivity : ComponentActivity() {
                     HomeScreen()
                 }
             }
-
-//        val rootLayout = findViewById<FrameLayout>(R.id.tile_container)
-//        TileManager(
-//            context = this,
-//            component = ComponentName(this, StepTile::class.java),
-//            parentView = rootLayout
-//        ).create()
 
     }
 }
@@ -102,7 +94,7 @@ fun StepsList(){
 @Composable
 fun StepDisplay(imageModifier: Modifier, textModifier: Modifier) {
     Image(
-        imageVector = ImageVector.vectorResource(id = R.drawable.run_img),
+        imageVector = ImageVector.vectorResource(id = com.dbtechprojects.stepcountershared.R.drawable.run_img),
         contentDescription = stringResource(R.string.app_icon),
         modifier = imageModifier,
     )

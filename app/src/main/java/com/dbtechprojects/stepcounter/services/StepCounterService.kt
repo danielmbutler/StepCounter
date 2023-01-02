@@ -141,7 +141,7 @@ class StepCounterService : Service() {
     }
 
     companion object {
-        const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
+        const val ACTION_STOP = "StepCounter.stop"
     }
 
 }
