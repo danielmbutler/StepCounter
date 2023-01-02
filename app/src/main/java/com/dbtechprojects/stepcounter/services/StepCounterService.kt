@@ -14,11 +14,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.dbtechprojects.stepcounter.BuildConfig
-import com.dbtechprojects.stepcounter.R
 import com.dbtechprojects.stepcounter.StepCounterApp
-import com.dbtechprojects.stepcounter.models.Day
-import com.dbtechprojects.stepcounter.persistence.ActivityDao
+import com.dbtechprojects.stepcountershared.models.Day
+import com.dbtechprojects.stepcountershared.models.ActivityDao
 import com.dbtechprojects.stepcounter.ui.screens.getValue
 import kotlinx.coroutines.*
 
@@ -131,7 +129,7 @@ class StepCounterService : Service() {
         builder = NotificationCompat.Builder(this, channelId)
         builder.setContentTitle("Step Counter is Running")
         builder.setOngoing(true)
-        builder.setSmallIcon(R.drawable.run_img)
+        builder.setSmallIcon(com.dbtechprojects.stepcountershared.R.drawable.run_img)
         val managerCompat = NotificationManagerCompat.from(this)
         notification = builder.build()
         notification!!.flags = Notification.FLAG_ONGOING_EVENT

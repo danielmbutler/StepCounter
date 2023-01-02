@@ -1,8 +1,7 @@
-package com.dbtechprojects.stepcounter.persistence
+package com.dbtechprojects.stepcountershared.models
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.dbtechprojects.stepcounter.Constants
-import com.dbtechprojects.stepcounter.models.Day
+
 
 @Dao
 interface ActivityDao {
@@ -11,7 +10,7 @@ interface ActivityDao {
     fun getActivityInLastWeek() : LiveData<List<Day>>
 
     @Query("SELECT steps FROM Days WHERE date=:date")
-    fun getCurrentCount(date: String = Constants.getCurrentDate()): LiveData<Int?>
+    fun getCurrentCount(date: String = getCurrentDate()): LiveData<Int?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDay(day: Day)
@@ -20,6 +19,6 @@ interface ActivityDao {
     fun updateDay(day: Day)
 
     @Query("SELECT * FROM Days WHERE date=:date")
-    fun getCurrentDay(date: String = Constants.getCurrentDate()): Day?
+    fun getCurrentDay(date: String = getCurrentDate()): Day?
 
 }

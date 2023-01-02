@@ -1,10 +1,10 @@
-package com.dbtechprojects.stepcounter
+package com.dbtechprojects.stepcountershared.models
 
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.dbtechprojects.stepcounter.models.Day
-import com.dbtechprojects.stepcounter.persistence.ActivityDao
+import com.dbtechprojects.stepcountershared.models.Day
+import com.dbtechprojects.stepcountershared.models.ActivityDao
 
 
 class MainViewModel(private val db: ActivityDao): ViewModel()  {

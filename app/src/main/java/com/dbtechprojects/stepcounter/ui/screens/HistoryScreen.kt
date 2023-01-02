@@ -16,9 +16,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dbtechprojects.stepcounter.R
-import com.dbtechprojects.stepcounter.models.*
+import com.dbtechprojects.stepcounter.getBarData
 import com.dbtechprojects.stepcounter.ui.theme.Purple700
 import com.dbtechprojects.stepcounter.ui.theme.lightGreen
+import com.dbtechprojects.stepcountershared.models.*
 import me.bytebeats.views.charts.bar.BarChart
 import me.bytebeats.views.charts.bar.BarChartData
 import me.bytebeats.views.charts.bar.render.label.SimpleLabelDrawer

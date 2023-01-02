@@ -3,7 +3,7 @@ package com.dbtechprojects.stepcounter
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.dbtechprojects.stepcounter.persistence.ActivityDao
+import com.dbtechprojects.stepcountershared.models.ActivityDao
 import com.dbtechprojects.stepcounter.persistence.ActivityDatabase
 
 class StepCounterApp : Application(){

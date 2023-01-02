@@ -15,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.dbtechprojects.stepcounter.models.Day
+import com.dbtechprojects.stepcountershared.models.Day
 import com.dbtechprojects.stepcounter.services.StepCounterService
 import com.dbtechprojects.stepcounter.ui.screens.HistoryScreen
 import com.dbtechprojects.stepcounter.ui.screens.HomeScreen
 import com.dbtechprojects.stepcounter.ui.theme.StepCounterTheme
+import com.dbtechprojects.stepcountershared.models.MainViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel

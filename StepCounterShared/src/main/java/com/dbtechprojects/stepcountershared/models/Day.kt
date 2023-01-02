@@ -1,12 +1,9 @@
-package com.dbtechprojects.stepcounter.models
+package com.dbtechprojects.stepcountershared.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.dbtechprojects.stepcounter.Constants
-import com.dbtechprojects.stepcounter.ui.theme.lightGreen
-import me.bytebeats.views.charts.bar.BarChartData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -14,9 +11,13 @@ import java.util.*
 @Entity(tableName = "Days", indices = [Index(value = ["date"], unique = true)])
 data class Day(
     @PrimaryKey()    val id: Int? = null,
-    @ColumnInfo(name = "date")  val date: String = Constants.getCurrentDate(),
+    @ColumnInfo(name = "date")  val date: String = getCurrentDate(),
     @ColumnInfo(name = "steps") val steps: Int = 0
 )
+
+fun getCurrentDate(): String {
+    return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+}
 
 fun Day.getDayOfWeekText(): String {
     val format = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -46,18 +47,6 @@ fun List<Day>.getChartData():List<Day>{
     return newActivityList
 }
 
-fun List<Day>.getBarData(): List<BarChartData.Bar>{
-    val sortedList = this.toMutableList()
-        sortedList.sortBy{it.date}
-    val list = mutableListOf<BarChartData.Bar>()
-
-    sortedList.forEach { activity ->
-        val bar = BarChartData.Bar(activity.steps.toFloat(), color = lightGreen, activity.getDayOfWeekText().first().toString())
-        list.add(bar)
-    }
-
-    return list
-}
 
 fun Day.isToday(): Boolean {
     val format = DateTimeFormatter.ofPattern("yyyy-MM-dd")

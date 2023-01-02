@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.*
 import com.dbtechprojects.stepCounterWatch.theme.StepCounterTheme
+import com.dbtechprojects.stepcountershared.models.Day
 
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
             setContent {
                 StepCounterTheme() {
                     HomeScreen()
