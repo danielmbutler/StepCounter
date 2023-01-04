@@ -12,6 +12,9 @@ interface ActivityDao {
     @Query("SELECT steps FROM Days WHERE date=:date")
     fun getCurrentCount(date: String = getCurrentDate()): LiveData<Int?>
 
+    @Query("SELECT steps FROM Days WHERE date=:date")
+    fun getCurrentCountValue(date: String = getCurrentDate()): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertDay(day: Day)
 
