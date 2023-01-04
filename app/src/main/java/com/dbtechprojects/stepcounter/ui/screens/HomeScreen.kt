@@ -86,8 +86,3 @@ fun HistoryFab(navController: NavHostController) {
 
     }
 }
-
-fun SensorEvent.getValue(): Int {
-    Log.d("counto", (this.values[0].toString()))
-    return (this.values?.get(0) ?: 0).toInt()
-}

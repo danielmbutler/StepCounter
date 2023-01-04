@@ -4,11 +4,14 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.type.watch" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".StepCounterApp"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
         <uses-library
@@ -36,7 +39,7 @@
 
         <!-- COMPLICATION -->
         <service
-            android:name=".ComplicationService"
+            android:name=".service.ComplicationService"
             android:exported="true"
             android:icon="@drawable/run_img_white"
             android:label="@string/app_name"
@@ -54,11 +57,11 @@
                 android:value="300" />
         </service>
 
-        <receiver android:name=".ComplicationBroadcastReceiver" />
+        <receiver android:name=".service.ComplicationBroadcastReceiver" />
 
         <!-- TILE -->
         <service
-            android:name="com.dbtechprojects.stepCounterWatch.StepTile"
+            android:name="com.dbtechprojects.stepCounterWatch.service.StepTile"
             android:description="@string/app_name"
             android:exported="true"
             android:icon="@drawable/run_img"
@@ -73,6 +76,9 @@
                 android:name="androidx.wear.tiles.PREVIEW"
                 android:resource="@drawable/run_img" />
         </service>
+
+        <!-- Step Counter Service -->
+        <service android:name=".service.StepCounterService"/>
     </application>
 
 

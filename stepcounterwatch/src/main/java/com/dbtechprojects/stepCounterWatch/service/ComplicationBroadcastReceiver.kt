@@ -1,4 +1,4 @@
-package com.dbtechprojects.stepCounterWatch
+package com.dbtechprojects.stepCounterWatch.service
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context

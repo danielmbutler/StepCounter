@@ -1,5 +1,7 @@
 package com.dbtechprojects.stepcountershared.models
 
+import android.hardware.SensorEvent
+import android.util.Log
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index

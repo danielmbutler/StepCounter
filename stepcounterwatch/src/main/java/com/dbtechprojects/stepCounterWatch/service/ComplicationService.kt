@@ -1,4 +1,4 @@
-package com.dbtechprojects.stepCounterWatch
+package com.dbtechprojects.stepCounterWatch.service
 
 
 import android.graphics.drawable.Icon
@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.wear.watchface.complications.data.*
 import androidx.wear.watchface.complications.datasource.ComplicationDataSourceService
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
+import com.dbtechprojects.stepCounterWatch.StepCounterApp
 
 
 class ComplicationService : ComplicationDataSourceService() {
@@ -36,6 +37,8 @@ class ComplicationService : ComplicationDataSourceService() {
         Log.d(TAG, "onComplicationRequest() id: ${request.complicationInstanceId}")
         Log.d(TAG, "onComplicationRequest() id: ${request.complicationType}")
 
+        val stepCount = StepCounterApp.getDao().getCurrentCountValue()
+
 
          when (request.complicationType) {
 
@@ -45,7 +48,7 @@ class ComplicationService : ComplicationDataSourceService() {
                 ).build()
 
                val data =  ShortTextComplicationData.Builder(
-                    text = PlainComplicationText.Builder(text = "50").build(),
+                    text = PlainComplicationText.Builder(text = (stepCount ?: 0).toString()).build(),
                     contentDescription = PlainComplicationText
                         .Builder(text = "Short Text version of Number.").build(),
                ).setMonochromaticImage(image)
